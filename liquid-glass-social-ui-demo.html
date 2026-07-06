@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Glass • Social</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .liquid-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+
+        .liquid-glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 
+                0 12px 48px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                       box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px) scale(1.005);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        }
+
+        .story-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .story-bubble:hover {
+            transform: scale(1.1) translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-glass {
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(32px) saturate(200%);
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .post-image {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255,255,255,0.08) 0%,
+                transparent 40%,
+                rgba(0,0,0,0.15) 100%
+            );
+            pointer-events: none;
+        }
+
+        .liquid-highlight {
+            position: relative;
+        }
+        
+        .liquid-highlight::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255,255,255,0.25),
+                transparent
+            );
+            transform: skewX(-25deg);
+            animation: liquid-shimmer 4s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes liquid-shimmer {
+            0% { transform: translateX(-150%) skewX(-25deg); }
+            20% { transform: translateX(300%) skewX(-25deg); }
+            100% { transform: translateX(300%) skewX(-25deg); }
+        }
+
+        .section-header {
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .premium-text {
+            background: linear-gradient(90deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feed-container {
+            scrollbar-width: none;
+        }
+        
+        .feed-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .glass-button {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .glass-button:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.35);
+            transform: translateY(-1px);
+        }
+        
+        .metric {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0f] text-white overflow-x-hidden">
+    <!-- Top Header -->
+    <div class="sticky top-0 z-50 px-4 pt-4 pb-2">
+        <div class="max-w-md mx-auto">
+            <div class="liquid-glass rounded-3xl px-5 py-3.5 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-x-2.5">
+                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-cyan-400 flex items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-infinity text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display text-2xl tracking-tighter font-semibold premium-text">Lumina</span>
+                    </div>
+                </div>
+                
+                <!-- Search -->
+                <div class="flex-1 mx-4">
+                    <div class="liquid-glass rounded-2xl px-4 py-2 flex items-center gap-x-3 text-sm">
+                        <i class="fa-solid fa-search text-white/60"></i>
+                        <input type="text" 
+                               class="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-white/50"
+                               placeholder="Search creators, moments...">
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-x-1">
+                    <button class="w-9 h-9 flex items-center justify-center text-white/80 hover:text-white transition-colors">
+                        <i class="fa-solid fa-bell text-lg"></i>
+                    </button>
+                    <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/20">
+                        <img src="https://i.pravatar.cc/32?img=47" class="w-full h-full object-cover" alt="Your avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto px-4 pb-24">
+        
+        <!-- Stories -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div class="section-header text-white/70 tracking-[2px]">STORIES</div>
+                <button class="text-xs text-white/60 flex items-center gap-x-1 hover:text-white/90 transition-colors">
+                    See all <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+            </div>
+            
+            <div class="flex gap-x-3.5 overflow-x-auto pb-3 snap-x snap-mandatory hide-scrollbar">
+                <!-- Story bubbles -->
+                <div class="flex flex-col items-center gap-y-1.5 flex-shrink-0 snap-start">
+                    <div class="story-bubble w-16 h-16 rounded-full p-0.5 ring-1 ring-white/10">
+                        <div class="w-full h-full rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-[#0a0a0f] ring-violet-400">
+                            <img src="https://i.pravatar.cc/64?img=28" class="w-full h-full object-cover" alt="">
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-white/70 font-medium">Aarav</span>
+                </div>
+                
+                <div class="flex flex-col items-center gap-y-1.5 flex-shrink-0 snap-start">
+                    <div class="story-bubble w-16 h-16 rounded-full p-0.5">
+                        <div class="w-full h-full rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-[#0a0a0f] ring-white/30">
+                            <img src="https://i.pravatar.cc/64?img=40" class="w-full h-full object-cover" alt="">
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-white/70 font-medium">Meera</span>
+                </div>
+                
+                <div class="flex flex-col items-center gap-y-1.5 flex-shrink-0 snap-start">
+                    <div class="story-bubble w-16 h-16 rounded-full p-0.5">
+                        <div class="w-full h-full rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-[#0a0a0f] ring-cyan-400">
+                            <img src="https://i.pravatar.cc/64?img=32" class="w-full h-full object-cover" alt="">
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-white/70 font-medium">Kabir</span>
+                </div>
+                
+                <div class="flex flex-col items-center gap-y-1.5 flex-shrink-0 snap-start">
+                    <div class="story-bubble w-16 h-16 rounded-full p-0.5">
+                        <div class="w-full h-full rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-[#0a0a0f] ring-fuchsia-400">
+                            <img src="https://i.pravatar.cc/64?img=25" class="w-full h-full object-cover" alt="">
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-white/70 font-medium">Zara</span>
+                </div>
+                
+                <div class="flex flex-col items-center gap-y-1.5 flex-shrink-0 snap-start">
+                    <div class="story-bubble w-16 h-16 rounded-full p-0.5">
+                        <div class="w-full h-full rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-[#0a0a0f] ring-white/30">
+                            <img src="https://i.pravatar.cc/64?img=60" class="w-full h-full object-cover" alt="">
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-white/70 font-medium">Rohan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feed Header -->
+        <div class="flex items-center justify-between mb-4 px-1">
+            <div>
+                <span class="section-header text-white/70 tracking-[2px]">FOR YOU</span>
+            </div>
+            <div class="flex items-center gap-x-2 text-xs">
+                <div class="px-3 py-1 rounded-full liquid-glass text-xs flex items-center gap-x-1.5 cursor-pointer active:scale-[0.985] transition-transform">
+                    <i class="fa-solid fa-globe text-emerald-400"></i>
+                    <span class="font-medium">Global</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="space-y-5 feed-container">
+            
+            <!-- Post 1 -->
+            <div class="glass-card rounded-3xl overflow-hidden">
+                <!-- Post Header -->
+                <div class="px-4 pt-4 pb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 rounded-2xl overflow-hidden ring-1 ring-white/20">
+                            <img src="https://i.pravatar.cc/36?img=28" class="w-full h-full object-cover" alt="">
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-x-1.5">
+                                <span class="font-semibold text-[15px]">Aarav Mehta</span>
+                                <span class="text-emerald-400"><i class="fa-solid fa-check-circle text-xs"></i></span>
+                            </div>
+                            <span class="text-white/50 text-xs">2h ago • Mumbai</span>
+                        </div>
+                    </div>
+                    <button class="text-white/60 hover:text-white px-2 py-1">
+                        <i class="fa-solid fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                
+                <!-- Post Image -->
+                <div class="post-image aspect-[16/10] mx-3 rounded-2xl overflow-hidden relative">
+                    <img src="https://picsum.photos/id/1015/600/375" class="w-full h-full object-cover" alt="Cosmic landscape">
+                    <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full liquid-glass text-xs flex items-center gap-x-1.5">
+                        <i class="fa-solid fa-play text-[10px]"></i>
+                        <span class="font-medium">1:42</span>
+                    </div>
+                </div>
+                
+                <!-- Caption -->
+                <div class="px-4 pt-4 pb-1">
+                    <p class="text-[13.5px] leading-snug text-white/90">The quiet between the stars. Shot on the new Lumina 9 Pro during the meteor shower last night.</p>
+                </div>
+                
+                <!-- Metrics -->
+                <div class="px-4 py-3 flex items-center justify-between text-sm border-t border-white/10">
+                    <div class="flex items-center gap-x-5">
+                        <div class="flex items-center gap-x-1.5 cursor-pointer group">
+                            <i class="fa-solid fa-heart text-rose-400 group-active:scale-125 transition-transform"></i>
+                            <span class="metric text-white/80 text-xs font-medium">148.2k</span>
+                        </div>
+                        <div class="flex items-center gap-x-1.5 cursor-pointer group">
+                            <i class="fa-solid fa-comment text-sky-400 group-active:scale-125 transition-transform"></i>
+                            <span class="metric text-white/80 text-xs font-medium">12.4k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-x-1 text-white/60">
+                        <button class="glass-button px-3 py-1.5 rounded-2xl flex items-center gap-x-2 text-xs active:scale-[0.985]">
+                            <i class="fa-solid fa-share"></i>
+                            <span class="font-medium">Share</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 2 -->
+            <div class="glass-card rounded-3xl overflow-hidden">
+                <div class="px-4 pt-4 pb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 rounded-2xl overflow-hidden ring-1 ring-white/20">
+                            <img src="https://i.pravatar.cc/36?img=40" class="w-full h-full object-cover" alt="">
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-x-1.5">
+                                <span class="font-semibold text-[15px]">Meera Rao</span>
+                            </div>
+                            <span class="text-white/50 text-xs">Yesterday • Goa</span>
+                        </div>
+                    </div>
+                    <button class="text-white/60 hover:text-white px-2 py-1">
+                        <i class="fa-solid fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                
+                <div class="post-image aspect-[16/9] mx-3 rounded-2xl overflow-hidden">
+                    <img src="https://picsum.photos/id/1005/600/340" class="w-full h-full object-cover" alt="Ocean waves">
+                </div>
+                
+                <div class="px-4 pt-4 pb-1">
+                    <p class="text-[13.5px] leading-snug text-white/90">Ocean taught me patience. The way it keeps coming back, no matter how many times it gets pulled away.</p>
+                </div>
+                
+                <div class="px-4 py-3 flex items-center justify-between text-sm border-t border-white/10">
+                    <div class="flex items-center gap-x-5">
+                        <div class="flex items-center gap-x-1.5 cursor-pointer group">
+                            <i class="fa-solid fa-heart text-rose-400 group-active:scale-125 transition-transform"></i>
+                            <span class="metric text-white/80 text-xs font-medium">89.7k</span>
+                        </div>
+                        <div class="flex items-center gap-x-1.5 cursor-pointer group">
+                            <i class="fa-solid fa-comment text-sky-400 group-active:scale-125 transition-transform"></i>
+                            <span class="metric text-white/80 text-xs font-medium">6.8k</span>
+                        </div>
+                    </div>
+                    
+                    <button class="glass-button px-3.5 py-1.5 rounded-2xl flex items-center gap-x-2 text-xs active:scale-[0.985]">
+                        <i class="fa-solid fa-bookmark"></i>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="h-8"></div>
+        
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
+        <div class="nav-glass px-2 py-2.5 rounded-t-3xl">
+            <div class="flex justify-around items-center text-center">
+                <button onclick="switchTab(this, 'home')" class="tab-button flex flex-col items-center gap-y-px text-emerald-400 active:opacity-80">
+                    <i class="fa-solid fa-home text-xl"></i>
+                    <span class="text-[9px] font-medium tracking-wider">Home</span>
+                </button>
+                
+                <button onclick="switchTab(this, 'explore')" class="tab-button flex flex-col items-center gap-y-px text-white/70 hover:text-white/90 active:opacity-80">
+                    <i class="fa-solid fa-compass text-xl"></i>
+                    <span class="text-[9px] font-medium tracking-wider">Explore</span>
+                </button>
+                
+                <button onclick="createPost()" 
+                        class="tab-button -mt-5 w-14 h-14 flex items-center justify-center rounded-2xl liquid-glass shadow-xl active:scale-95 transition-all">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
+                        <i class="fa-solid fa-plus text-white text-xl"></i>
+                    </div>
+                </button>
+                
+                <button onclick="switchTab(this, 'activity')" class="tab-button flex flex-col items-center gap-y-px text-white/70 hover:text-white/90 active:opacity-80">
+                    <div class="relative">
+                        <i class="fa-solid fa-heart text-xl"></i>
+                        <div class="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-rose-500 rounded-full flex items-center justify-center">
+                            <span class="text-[7px] font-bold">3</span>
+                        </div>
+                    </div>
+                    <span class="text-[9px] font-medium tracking-wider">Activity</span>
+                </button>
+                
+                <button onclick="switchTab(this, 'profile')" class="tab-button flex flex-col items-center gap-y-px text-white/70 hover:text-white/90 active:opacity-80">
+                    <i class="fa-solid fa-user text-xl"></i>
+                    <span class="text-[9px] font-medium tracking-wider">Profile</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#6366f1');
+        }
+        
+        function switchTab(element, tab) {
+            // Remove active from all
+            document.querySelectorAll('.tab-button').forEach(el => {
+                el.classList.remove('text-emerald-400');
+                el.classList.add('text-white/70');
+            });
+            
+            // Add active to clicked
+            element.classList.remove('text-white/70');
+            element.classList.add('text-emerald-400');
+            
+            // Demo feedback
+            if (tab === 'explore') {
+                const feed = document.querySelector('.feed-container');
+                if (feed) {
+                    feed.style.transition = 'all 0.4s ease';
+                    feed.style.opacity = '0.6';
+                    setTimeout(() => {
+                        feed.style.opacity = '1';
+                        alert("In a real app this would load the Explore feed with trending content.");
+                    }, 420);
+                }
+            }
+            
+            if (tab === 'profile') {
+                setTimeout(() => {
+                    alert("Profile screen would open here with your liquid glass profile UI.");
+                }, 180);
+            }
+        }
+        
+        function createPost() {
+            const modal = document.createElement('div');
+            modal.className = `fixed inset-0 z-[100] flex items-end justify-center bg-black/70`;
+            modal.innerHTML = `
+                <div class="liquid-glass w-full max-w-md rounded-t-3xl p-5 pb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="font-semibold text-lg">Create new post</div>
+                        <button class="text-white/60 hover:text-white text-xl" onclick="this.closest('.fixed').remove()">×</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="glass-card rounded-2xl p-4">
+                            <textarea class="w-full bg-transparent resize-y min-h-[90px] text-sm placeholder:text-white/50 outline-none" 
+                                      placeholder="What's happening in your world today?"></textarea>
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <button onclick="simulatePost(this)" 
+                                    class="flex-1 py-3.5 rounded-2xl bg-white text-black font-semibold active:scale-[0.985] transition-all">
+                                Post
+                            </button>
+                            <button onclick="this.closest('.fixed').remove()" 
+                                    class="flex-1 py-3.5 rounded-2xl border border-white/20 text-sm font-medium active:bg-white/5">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function simulatePost(btn) {
+            btn.innerHTML = `<span class="flex items-center justify-center gap-x-2"><i class="fa-solid fa-check"></i> Posted!</span>`;
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.closest('.fixed').remove();
+                
+                // Add a new post to feed (demo)
+                const feed = document.querySelector('.feed-container');
+                const newPost = document.createElement('div');
+                newPost.className = `glass-card rounded-3xl overflow-hidden mt-5`;
+                newPost.innerHTML = `
+                    <div class="px-4 pt-4 pb-3 flex items-center justify-between">
+                        <div class="flex items-center gap-x-3">
+                            <div class="w-9 h-9 rounded-2xl overflow-hidden ring-1 ring-white/20">
+                                <img src="https://i.pravatar.cc/36?img=47" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <span class="font-semibold text-[15px]">You</span>
+                                <span class="text-white/50 text-xs ml-2">just now</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <p class="text-[13.5px]">Just posted my first thought using the new Lumina app. Loving the liquid glass vibe 🔥</p>
+                    </div>
+                `;
+                feed.prepend(newPost);
+                
+                // Scroll to top of feed
+                newPost.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1200);
+        }
+        
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                e.preventDefault();
+                const search = document.querySelector('input[placeholder*="Search"]');
+                if (search) search.focus();
+            }
+        });
+        
+        // Boot
+        function boot() {
+            initializeTailwind();
+            
+            // Subtle random shimmer on some cards
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.glass-card');
+                cards.forEach((card, i) => {
+                    if (i % 2 === 0) {
+                        card.style.transitionDuration = '1.8s';
+                    }
+                });
+            }, 800);
+            
+            // Easter egg: double click header for fun
+            const header = document.querySelector('.sticky');
+            if (header) {
+                header.addEventListener('dblclick', () => {
+                    document.body.style.transition = 'filter 400ms';
+                    document.body.style.filter = 'hue-rotate(25deg) saturate(1.3)';
+                    setTimeout(() => {
+                        document.body.style.filter = 'none';
+                    }, 1400);
+                });
+            }
+            
+            console.log('%c[Liquid Glass Demo] Premium UI ready. Built with love for Ribon.', 'color:#64748b');
+        }
+        
+        window.onload = boot;
+    </script>
+</body>
+</html>
